@@ -22,7 +22,8 @@ Subklasės (**Carrier**, **Destroyer**, **Submarine**, **Battleship**, **Cruiser
 
 `Ship` klasė turi bendrą metodą `ship_sunk`. Kiekviena `Ship` subklasė turi savo specifinius parametrus šiam metodui (skirtingas dydis).
 
-```py class Ship:
+```py
+class Ship:
 def __init__(self, size):
     self.size = size
     self.hit_count = 0
@@ -62,7 +63,8 @@ class Destroyer(Ship):
 
 `Ship` klasė apibrėžia abstrakčią laivo sąvoką su bendromis savybėmis (`size`, `hit_count`) ir metodais (`ship_sunk()`), bet konkrečius laivų tipus apibrėžia subklasės. `GUI` klasėje žaidimo logika (pvz., laivų statymas, šūvių apdorojimas) yra abstraktuota į atskirus metodus, kuriuos vartotojas mato kaip vieną visumą.
 
-```py class Ship:
+```py
+class Ship:
 def __init__(self, size):
     self.size = size
     self.hit_count = 0
@@ -103,7 +105,8 @@ class Destroyer(Ship):
 
 Visi konkretūs laivų tipai (**Carrier**, **Battleship**, **Cruiser**, **Submarine**, **Destroyer**) paveldi savybes iš bazinės `Ship` klasės. Paveldimos visos bazinės klasės savybės (`size`, `hit_count`) ir metodai (`ship_sunk()`). Kiekviena subklasė savo konstruktoriuje nurodo konkretų laivo dydį, perduodant jį klasės konstruktoriui per `super().__init__()`.
 
-```py class Ship:
+```py
+class Ship:
 def __init__(self, size):
     self.size = size
     self.hit_count = 0
@@ -142,24 +145,41 @@ class Destroyer(Ship):
 
 ## Inkapsuliacija
 
-`ShipFactory` klasė inkapsuliuoja laivų kūrimo logiką – vartotojui nereikia žinoti, kaip kuriami konkretūs laivų objektai, tik perduoti laivo tipą.
+`Ship` klasė inkapsuliuoja laivų kūrimo logiką – `super().__init__` konstruktorius yra privatus metodas
 
 ```python
-class ShipFactory:
-    @staticmethod
-    def create_ship(ship_type):
-        if ship_type == 'Carrier':
-            return Carrier()
-        elif ship_type == 'Battleship':
-            return Battleship()
-        elif ship_type == 'Cruiser':
-            return Cruiser()
-        elif ship_type == 'Submarine':
-            return Submarine()
-        elif ship_type == 'Destroyer':
-            return Destroyer()
-        else:
-            raise ValueError(f"Unknown ship type: {ship_type}")
+class Ship:
+def __init__(self, size):
+    self.size = size
+    self.hit_count = 0
+
+    def ship_sunk(self):
+            return self.hit_count >= self.size
+
+
+class Carrier(Ship):
+    def __init__(self):
+        super().__init__(size=5)
+
+
+class Battleship(Ship):
+    def __init__(self):
+        super().__init__(size=4)
+
+
+class Cruiser(Ship):
+    def __init__(self):
+        super().__init__(size=3)
+
+
+class Submarine(Ship):
+    def __init__(self):
+        super().__init__(size=3)
+
+
+class Destroyer(Ship):
+    def __init__(self):
+        super().__init__(size=2)
 ```
 ---
 
